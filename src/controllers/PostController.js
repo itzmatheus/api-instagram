@@ -21,25 +21,26 @@ module.exports = {
         let fileName = "";
 
         if (req.file){
+
             const { filename: image, key: key, location: url = "" } = req.file;  
             fileName = url;
-        }
 
-        if ( (process.env.STORAGE_TYPE === 'local') && fileName){
+            if ( (process.env.STORAGE_TYPE === 'local') && req.file) { 
 
-            const [name] = image.split('.');
+                const [name] = image.split('.');
 
-            fileName = `http://${process.env.APP_HOST}/files/${name}.jpg`;
-    
-            await sharp(req.file.path)
-            .resize(500)
-            .jpeg({ quality: 70 })
-            .toFile(
-                path.resolve(req.file.destination, 'resized', name + '.jpg') 
-            );
-    
-            fs.unlinkSync(req.file.path);
+                fileName = `http://${process.env.APP_HOST}/files/${name}.jpg`;
+                console.log("aa" + fileName)
+                await sharp(req.file.path)
+                .resize(500)
+                .jpeg({ quality: 70 })
+                .toFile(
+                    path.resolve(req.file.destination, 'resized', name + '.jpg') 
+                );
+        
+                fs.unlinkSync(req.file.path);
 
+            }
         }
 
         const post = await Post.create({
