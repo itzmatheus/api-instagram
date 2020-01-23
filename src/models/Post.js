@@ -9,11 +9,14 @@ require('dotenv').config();
 const s3 = new aws.S3();
 
 const PostScheema = new mongoose.Schema({
-    author: String, 
+    author_name: String,
+    author_avatar: String,
     place: String,
     description: String,
     hashtags: String,
     image: String,
+    image_small: String,
+    aspectRatio: String,
     key: String,
     likes: {
         type: Number,
